@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Personalized Chuck Norris Joke App</title>
+    <style>
+        body {
+            background-color: #ffe4c4;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        #container {
+            width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        input {
+            padding: 8px;
+            width: 95%;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        #jokeBox {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <h2>Personalized Chuck Norris Joke App</h2>
+
+    <label>First Name:</label>
+    <input type="text" id="firstName" placeholder="Enter first name">
+
+    <label>Last Name:</label>
+    <input type="text" id="lastName" placeholder="Enter last name">
+
+    <button id="getJoke">Get Personalized Joke</button>
+
+    <div id="jokeBox"></div>
+</div>
+
+<script>
+    document.getElementById("getJoke").addEventListener("click", getJoke);
+
+    function getJoke() {
+        let first = document.getElementById("firstName").value.trim();
+        let last = document.getElementById("lastName").value.trim();
+
+        let fullName = (first + " " + last).trim();
+        if (fullName === "") fullName = "Chuck Norris";
+
+        fetch("https://api.chucknorris.io/jokes/random")
+            .then(response => response.json())
+            .then(data => {
+                let joke = data.value;
+
+                // Replace all occurrences of "Chuck Norris"
+                joke = joke.replace(/Chuck Norris/gi, fullName);
+
+                document.getElementById("jokeBox").innerHTML = joke;
+            })
+            .catch(err => console.log(err));
+    }
+</script>
+
+</body>
+</html>
